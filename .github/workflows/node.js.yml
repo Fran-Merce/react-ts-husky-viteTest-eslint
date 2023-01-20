@@ -1,50 +1,41 @@
-name: main
+name: Node.js CI
+
 on:
-  # Should only be on push or pull request to main.
   push:
-    branches: ['main']
+    branches: [ "main" ]
   pull_request:
-    branches: ['*']
-  workflow_dispatch:
+    branches: [ "*" ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [ 16.x ]
+
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
 
-      # Cache dependencies
-      - uses: actions/setup-node@v3
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v3
         with:
-          node-version: 18.12.1
-          cache: 'npm'
+          node-version: Set Node.js 16.x
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Create build folder
-        run: npm run build
-
-      - name: Store build folder as artifact for deploy
-        uses: actions/upload-artifact@v3
+      - name: Run install
+        uses: borales/actions-yarn@v4
         with:
-          name: build
-          path: build
-  vite:
-    runs-on: ubuntu-latest
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
-
-      # Cache dependencies
-      - uses: actions/setup-node@v3
+          cmd: install
+      - name: Build production bundle
+        uses: borales/actions-yarn@v4
         with:
-          node-version: 18.12.1
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run Testing
-        run: npm run test:w
+          cmd: build
+      - name: Test the app
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: test:w # will run `yarn test` command
+      - name: Format the app
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: format
+    
