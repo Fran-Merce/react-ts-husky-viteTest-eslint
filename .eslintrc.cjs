@@ -13,11 +13,7 @@ module.exports = {
     'plugin:prettier/recommended',
     'prettier',
   ],
-  settings: {
-    'import/resolver': {
-      typescript: {}, // this loads <rootdir>/tsconfig.json to eslint
-    },
-  },
+
   overrides: [],
   parser: '@typescript-eslint/parser',
   parserOptions: {

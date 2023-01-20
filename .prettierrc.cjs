@@ -7,7 +7,6 @@ module.exports = {
   importOrderSeparation: true,
   importOrderSortSpecifiers: true,
   importOrderParserPlugins: ['typescript'],
-  parser: 'typescript',
   importOrderStyle: 'keep',
   jsxBracketSameLine: true,
   jsxSingleQuote: true,

@@ -20,8 +20,6 @@ This repository is a simple template with some configs to code with good practic
 
 - prettier
 
-- path alias
-
 - husky
   
   - pre-commit hook
