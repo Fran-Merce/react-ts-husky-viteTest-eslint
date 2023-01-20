@@ -6,6 +6,8 @@ This repository is a simple template with some configs to code with good practic
 
 - React
 
+-workflow ci/cd
+
 - Typescript
 
 - vite
