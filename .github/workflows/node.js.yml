@@ -1,27 +1,23 @@
 name: Node.js CI
-
-on:
+'on':
   push:
-    branches: [ "main" ]
+    branches:
+      - main
   pull_request:
-    branches: [ "*" ]
-
+    branches:
+      - '*'
 jobs:
   build:
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node-version: 18.12.1
-
     steps:
       - uses: actions/checkout@v3
-
       - name: Use Node.js 16.x
         uses: actions/setup-node@v3
         with:
           node-version: 18.12.1
-
       - name: Run install
         uses: borales/actions-yarn@v4
         with:
@@ -33,9 +29,8 @@ jobs:
       - name: Test the app
         uses: borales/actions-yarn@v4
         with:
-          cmd: test:w # will run `yarn test` command
+          cmd: 'test:w'
       - name: Format the app
         uses: borales/actions-yarn@v4
         with:
           cmd: format
-    
