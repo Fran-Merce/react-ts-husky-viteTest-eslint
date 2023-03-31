@@ -4,9 +4,9 @@ import { describe, it } from 'vitest';
 
 describe('App', () => {
   it('Should render correctly ', () => {
-    console.log(import.meta.env.SAY_HELLO as any);
+    console.log(import.meta.env.AWS_REGION as any);
     const component = render(<App />);
-    expect(import.meta.env.SAY_HELLO as any).toBeDefined();
+    expect(import.meta.env.AWS_REGION as any).toBeDefined();
     expect(component).toBeTruthy();
   });
 });
