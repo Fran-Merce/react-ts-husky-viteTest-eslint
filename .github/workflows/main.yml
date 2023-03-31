@@ -1,14 +1,26 @@
-name: CI
-on: [push]
+name: template-api CI workflow
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "*" ]
+
 env:
   AWS_BACK_TO_FRONT_URL : "http://localhost:4566/000000000000/BackToFront"
   AWS_FRONT_TO_BACK_URL : "http://localhost:4566/000000000000/FrontToBack"
   AWS_REGION : "us-east-1"
+
 jobs:
   build:
-    name: Test
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [ 16.x ]
+
     steps:
+    
       - name: Start LocalStack
         run: |
           pip install localstack awscli-local[ver1] 
@@ -22,30 +34,24 @@ jobs:
           awslocal sqs create-queue --queue-name FrontToBack --region $AWS_REGION
           awslocal sqs create-queue --queue-name BackToFront --region $AWS_REGION
           awslocal sqs list-queues
-
       - uses: actions/checkout@v3
 
-      - name: Set Node.js 16.x
+      - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
-          node-version: 18.12.1
+          node-version: ${{ matrix.node-version }}
 
-      - name: Run install
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: install # will run `yarn install` command
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} # if needed
-      - name: Build production bundle
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: build
-      - name: Test the app
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: test:w
+      - name: NPM or Yarn install with caching
+        uses: bahmutov/npm-install@v1.6.0
 
-      - name: run format
-        uses: borales/actions-yarn@v4
+      - name: Build
+        run: |
+          npm run lint
+          npm run format
+          npm run build
+      - name: Report code coverage
+        uses: zgosalvez/github-actions-report-lcov@v1
         with:
-          cmd: format
+          coverage-files: ./coverage/lcov.info
+          minimum-coverage: 50
+          github-token: ${{ secrets.GITHUB_TOKEN }}
