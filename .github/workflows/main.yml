@@ -6,7 +6,7 @@ jobs:
     name: Test
     runs-on: ubuntu-latest
     steps:
-    - name: Start LocalStack
+      - name: Start LocalStack
         run: |
           pip install localstack awscli-local[ver1] 
           docker pull localstack/localstack         
@@ -16,8 +16,8 @@ jobs:
           echo "Startup complete"          
       - name: Create Test Queues
         run: |                 
-          awslocal sqs create-queue --queue-name Test1
-          awslocal sqs create-queue --queue-name Test2
+          awslocal sqs create-queue --queue-name FrontToBack
+          awslocal sqs create-queue --queue-name BackToFront
           awslocal sqs list-queues
 
       - uses: actions/checkout@v3
