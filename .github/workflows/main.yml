@@ -1,7 +1,8 @@
 name: CI
 on: [push]
 env:
-  SAY_HELLO: "Hello World"
+  AWS_BACK_TO_FRONT_URL : "http://localhost:4566/000000000000/BackToFront"
+  AWS_FRONT_TO_BACK_URL : "http://localhost:4566/000000000000/FrontToBack"
 jobs:
   build:
     name: Test
