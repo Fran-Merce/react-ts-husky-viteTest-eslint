@@ -2,6 +2,22 @@ name: CI
 on: [push]
 
 jobs:
+  Localstack:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Start LocalStack
+        run: |
+          pip install localstack awscli-local[ver1] 
+          docker pull localstack/localstack         
+          localstack start -d                       
+          echo "Waiting for LocalStack startup..." 
+          localstack wait -t 30                     
+          echo "Startup complete"          
+      - name: Create Test Queues
+        run: |                 
+          awslocal sqs create-queue --queue-name Test1
+          awslocal sqs create-queue --queue-name Test2
+          awslocal sqs list-queues        
   build:
     name: Test
     runs-on: ubuntu-latest
@@ -32,3 +48,5 @@ jobs:
         uses: borales/actions-yarn@v4
         with:
           cmd: format
+
+  
