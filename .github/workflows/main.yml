@@ -2,9 +2,11 @@ name: CI
 on: [push]
 
 jobs:
-  Localstack:
+  
+  build:
+    name: LocalStack
     runs-on: ubuntu-latest
-    steps:
+      steps:
       - name: Start LocalStack
         run: |
           pip install localstack awscli-local[ver1] 
@@ -18,35 +20,33 @@ jobs:
           awslocal sqs create-queue --queue-name Test1
           awslocal sqs create-queue --queue-name Test2
           awslocal sqs list-queues        
-  build:
-    name: Test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
+      name: Test
+      steps:
+        - uses: actions/checkout@v3
 
-      - name: Set Node.js 16.x
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18.12.1
+        - name: Set Node.js 16.x
+          uses: actions/setup-node@v3
+          with:
+            node-version: 18.12.1
 
-      - name: Run install
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: install # will run `yarn install` command
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} # if needed
-      - name: Build production bundle
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: build
-      - name: Test the app
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: test:w
+        - name: Run install
+          uses: borales/actions-yarn@v4
+          with:
+            cmd: install # will run `yarn install` command
+          env:
+            NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} # if needed
+        - name: Build production bundle
+          uses: borales/actions-yarn@v4
+          with:
+            cmd: build
+        - name: Test the app
+          uses: borales/actions-yarn@v4
+          with:
+            cmd: test:w
 
-      - name: run format
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: format
+        - name: run format
+          uses: borales/actions-yarn@v4
+          with:
+            cmd: format
 
-  
+    
