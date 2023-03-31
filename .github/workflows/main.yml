@@ -3,6 +3,7 @@ on: [push]
 env:
   AWS_BACK_TO_FRONT_URL : "http://localhost:4566/000000000000/BackToFront"
   AWS_FRONT_TO_BACK_URL : "http://localhost:4566/000000000000/FrontToBack"
+  AWS_REGION : "us-east-1"
 jobs:
   build:
     name: Test
@@ -18,8 +19,8 @@ jobs:
           echo "Startup complete"          
       - name: Create Test Queues
         run: |                 
-          awslocal sqs create-queue --queue-name FrontToBack
-          awslocal sqs create-queue --queue-name BackToFront
+          awslocal sqs create-queue --queue-name FrontToBack --region $AWS_REGION
+          awslocal sqs create-queue --queue-name BackToFront --region $AWS_REGION
           awslocal sqs list-queues
 
       - uses: actions/checkout@v3
