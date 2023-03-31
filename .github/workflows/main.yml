@@ -6,15 +6,15 @@ jobs:
   build:
     name: LocalStack
     runs-on: ubuntu-latest
-      steps:
-      - name: Start LocalStack
-        run: |
-          pip install localstack awscli-local[ver1] 
-          docker pull localstack/localstack         
-          localstack start -d                       
-          echo "Waiting for LocalStack startup..." 
-          localstack wait -t 30                     
-          echo "Startup complete"          
+    steps:
+      - name: LocalStack
+      run: |
+        pip install localstack awscli-local[ver1] 
+        docker pull localstack/localstack         
+        localstack start -d                       
+        echo "Waiting for LocalStack startup..." 
+        localstack wait -t 30                     
+        echo "Startup complete"          
       - name: Create Test Queues
         run: |                 
           awslocal sqs create-queue --queue-name Test1
