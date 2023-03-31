@@ -1,6 +1,7 @@
 name: CI
 on: [push]
-
+env:
+  SAY_HELLO: "Hello World"
 jobs:
   build:
     name: Test
