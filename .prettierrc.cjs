@@ -2,7 +2,6 @@ module.exports = {
   singleQuote: true,
   trailingComma: 'all',
   parser: 'typescript',
-  endOfLine: 'crlf',
   importOrder: ['^react$', '^[./]', '^@/(.*)$'],
   importOrderSeparation: true,
   importOrderSortSpecifiers: true,
@@ -13,3 +12,4 @@ module.exports = {
   jsxSingleQuote: true,
   sortImports: true,
 };
+
